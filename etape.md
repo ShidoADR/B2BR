@@ -49,5 +49,31 @@ environnement de ***Root***
 		- Defaults	passwd_tries=3
 		- Defaults	log_input, log_output
 		- Defaults	iolog_dir="/var/log/sudo/"
+		- Defaults	logfile="/var/log/sudo/sudo" (on cree le fichier sudo avec `touch sudo`)
 		- Defaults	requiretty
 
+# IV - Configuration du mots de passe fort
+- pour la permiere etape on change quelques parametre du fichier **login.defs** dans `/etc/`
+	- PASS_MAX_DAYS	30
+	- PASS_min_DAYS	2
+	- PASS_WARN_AGE 7
+	
+	- **NB :** ces parametres ne sont pas pris en compte par les utilisateur deja present c'est a dire 
+***hariandr*** et ***root***
+	pour changer ces parametres il suffit d'utiliser la commande `chage [option] Login`
+	*exemple :* chage -M 30 hariandr
+		- -M 30 : change le PASS_MAX_DAYS en 30
+- pour les politiques de mots de passe on utilise le module appartenant a **PAM** qui est **pam_pwquality**
+	- pour installer le module il suffit d'utiliser la commande `apt install libpam-pwquality`
+	- emsuite il suffit d'ajouter les parametres suivant dans le fichier **common-password** se trouvant dans `/etc/pam.d/` (on mets les parametres apres `pam_pwquality.so`)
+		- retry=3
+		- minlen=10
+		- ucredit=-1
+		- lcredit=-1
+		- dcredit=-1
+		- maxrepeat=3
+		- usercheck=3
+		- enforec_for_root
+		- difok=7
+	- on **Reboot** la machine
+# V - creation du script 'Monitoring.sh'
