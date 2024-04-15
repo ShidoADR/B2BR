@@ -103,12 +103,13 @@ environnement de ***Root***
 			```
 		- creation du base de donnee
 			```
-				CREATE DATABASE `wp_wp`;
+			CREATE DATABASE `wp_wp`;
 			```
 		- selection de la base `USE wp_wp;`
 		- creation de l'utilisateur avec privilege sur la base de donnee
 			```
 			GRANT ALL ON `wp_wp` TO 'hariandr'@'localhost' IDENTIFIED BY 'hariandr' WITH GRANT OPTION;
+			GRANT ALL ON *.* TO 'hariandr'@'localhost';
 			```
 		- application des privileges avec `FLUSH PRIVILEGES;`
 		- installation de php avec les modules necessaire
@@ -131,3 +132,6 @@ environnement de ***Root***
 		rm latest.tar.gz
 		```
 		- installation de wordpress via navigateur avec l'adressse `localhost:8080/wordpress`
+		- creer le fichier wp-config.php avec `touch wp-config.php` puis mettre les parametres recommande dans le fichier
+		- ***USERNAME :*** hariandr 
+		- ***PASSWORD :*** hariandrHariand@@@111
