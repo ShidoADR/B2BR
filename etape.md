@@ -83,10 +83,51 @@ environnement de ***Root***
 	- installation de *lmp* stack (lighttpd, mariaDB, php)
 		- intallation de lighttpd
 			```
-				apt install lighttpd
+			apt install lighttpd
 			```
 		- autorisation du port http
 			```
-				ufw allow http
+			ufw allow http
 			```
-		- installation de wordpress
+		- installation de mariaDB
+			```
+			apt install mariadb-server -y
+			```
+		- securisation de mariaDB
+			```
+			sudo mysql_secure_installation (ENTER, n, n, y, y, y, y)
+			```
+		- connexion sur mariaDB
+			```
+			mariadb -u root
+			```
+		- creation du base de donnee
+			```
+				CREATE DATABASE `wp_wp`;
+			```
+		- selection de la base `USE wp_wp;`
+		- creation de l'utilisateur avec privilege sur la base de donnee
+			```
+			GRANT ALL ON `wp_wp` TO 'hariandr'@'localhost' IDENTIFIED BY 'hariandr' WITH GRANT OPTION;
+			```
+		- application des privileges avec `FLUSH PRIVILEGES;`
+		- installation de php avec les modules necessaire
+		```
+		apt install php php-cgi php-mysql -y
+
+		```
+		- activation des modules 
+		```
+		lighttpd-enable-mod fastcgi
+		lighttpd-enable-mod fastcgi-php
+		service lighttpd force-reload
+		```
+		- installation de wget avec `apt install wget`
+		- aller dans le Directory du serveur `/var/www/html`
+		- telechargement et extraction de wordpress
+		```
+		wget https://wordpress.org/latest.tar.gz
+		tar -xvf latest.tar.gz
+		rm latest.tar.gz
+		```
+		- installation de wordpress via navigateur avec l'adressse `localhost:8080/wordpress`
