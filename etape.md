@@ -49,7 +49,7 @@ environnement de ***Root***
 		- Defaults	passwd_tries=3
 		- Defaults	log_input, log_output
 		- Defaults	iolog_dir="/var/log/sudo/"
-		- Defaults	logfile="/var/log/sudo/sudo" (on cree le fichier sudo avec `touch sudo`)
+		- Defaults	logfile="/var/log/sudo/sudo.log"
 		- Defaults	requiretty
 
 # IV - Configuration du mots de passe fort
@@ -73,7 +73,16 @@ environnement de ***Root***
 		- dcredit=-1
 		- maxrepeat=3
 		- usercheck=3
-		- enforec_for_root
+		- enforce_for_root
 		- difok=7
 	- on **Reboot** la machine
 # V - creation du script 'Monitoring.sh'
+
+# VI - Bonus
+	- intallation de ***WORDPRESS***
+		- installation de *lmp* stack (lighttpd, mariaDB, php)
+			-	```
+					apt install lighttpd
+					apt install mariaDB
+					apt install php
+				```
