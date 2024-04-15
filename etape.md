@@ -81,8 +81,12 @@ environnement de ***Root***
 # VI - Bonus
 - intallation de ***WORDPRESS***
 	- installation de *lmp* stack (lighttpd, mariaDB, php)
-		-	```
-				apt install lighttpd
-				apt install mariaDB
-				apt install php
+		- intallation de lighttpd
 			```
+				apt install lighttpd
+			```
+		- autorisation du port http
+			```
+				ufw allow http
+			```
+		- installation de wordpress
