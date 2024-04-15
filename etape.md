@@ -79,10 +79,10 @@ environnement de ***Root***
 # V - creation du script 'Monitoring.sh'
 
 # VI - Bonus
-	- intallation de ***WORDPRESS***
-		- installation de *lmp* stack (lighttpd, mariaDB, php)
-			-	```
-					apt install lighttpd
-					apt install mariaDB
-					apt install php
-				```
+- intallation de ***WORDPRESS***
+	- installation de *lmp* stack (lighttpd, mariaDB, php)
+		-	```
+				apt install lighttpd
+				apt install mariaDB
+				apt install php
+			```
