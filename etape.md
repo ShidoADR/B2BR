@@ -135,3 +135,48 @@ environnement de ***Root***
 		- creer le fichier wp-config.php avec `touch wp-config.php` puis mettre les parametres recommande dans le fichier
 		- ***USERNAME :*** hariandr 
 		- ***PASSWORD :*** hariandrHariand@@@111
+
+- intallation de ***FAIL2BAN***
+	- on installe le paquet fail2ban
+		```
+		apt install fail2ban
+		```
+	- on verifie si il est actif 
+		```
+		systemctl status fail2ban
+		```
+	- si *active* : `failed` ils suffit de modifier le fichier `jail.local` dans */etc/fail2ban/*
+		```
+		[sshd]
+		backend=systemd
+		enabled = true
+		```
+	- ensuite on modifie le fichier `custom.conf`(qu'on cree manuellement) dans */etc/fail2ban/jail.d/*
+		```
+		[DEFAULT]
+		ignoreip = 127.0.0.1 10.0.2.15
+		findtime = 10m
+		bantime = 30s
+		maxretry = 3
+		bantime.increment = true
+		bantime.maxtime = 120s
+		[sshd]
+		enabled = true
+		port = 4242
+		logpath = /var/log/auth.log
+		```
+
+	- `ignoreip` : permet de définir la liste des IP à ignorer
+	- `findtime` : définit en secondes le temps depuis lequel une anomalie est recherchée dans les logs
+	- `bantime`  : La durée de bannissement d'une IP
+	- la partie `[sshd]` : permet d'activer la surveillance des connexion ssh
+	- apres cela il suffit de redemarrer le service *fail2ban* avec `systemctl restart fail2ban`
+	- pour verifier si les prisons ont etet correctement lancer on utilise `fail2ban-client status`
+	- On peut controler les prisons avec `start, stop, status`
+	- *exemple :* fail2ban-client stop sshd
+	- On peut bannir / de-bannir manuellement une **IP** manuellement avec :
+		```
+		fail2ban-client set [nom du jail] unbanip [IP concerné]
+		fail2ban-client set [nom du jail] banip [IP à bannir]
+		```
+	- Vous avez aussi `SSHGUARD` comme alternative a Fail2Ban qui est plus facile a maintenir
