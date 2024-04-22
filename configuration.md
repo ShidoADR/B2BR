@@ -32,3 +32,8 @@
 	- `/srv` = **3221225472** Bytes
 	- `/tmp` = **3221225472** Bytes
 	- `/var/log` = le reste
+- vous devez avoir a peu pres ce resultats :
+![result](result.png)
+- Apres cela vous pouvez faire ce que vous voulez 
+	- *PS :* il ne faut pas installer une interface graphique
+	- *PS2 :* n'oubliez pas d'oinstaller GRUB manager ;)
