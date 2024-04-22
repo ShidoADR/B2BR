@@ -10,4 +10,25 @@
 ### Installation du systeme avec partitionnement
 - vous avez votre machine et ses details , pour commencer l'installation il suffit de cliquer sur demarrer
 ![start](.assets/config.png)
-	
+- apres demarrage, on vous demande de choisir entre plusieurs choix, mais nous installerons sans graphique c'est a dire `install`
+![boot](.assets/boot.png)
+- Ensuite, on vous demandera de configurer le clavier, region, etc (c'est a vous de les remlir)
+![etape1](.assets/etape1.png)
+- Puis on vous demandera de choisir un hostname, suivant le sujet il s'agira de votre **login** + **42** (skipper la partie nom de domaine)
+- Puis on vous demandera un mots de passe pour le ***Root*** (je vous conseil de choisir un mots de pase similaire aux mots de passe de votre futur **User**)
+- vous pouvez continuer jusqu'au partitionnement :stuck_out_tongue_winking_eye:
+- maintenant on va faire le partitionnemt, nous allons le faire manuellement
+![partition0](.assets/partit0.png)
+- Selectionner le disque qui est dispo
+![partition1](.assets/partit1.png)
+- on a pour but : 
+![but](.assets/buts.png)
+- pour avoir les bonne tailles il faut partitionner en Bytes donc :
+	- `/boot` = **525336576** Bytes
+	- `/` = **10737418240** Bytes
+	- `[SWAP]` = **2469606195.2** Bytes
+	- `/home` = **5368709120** Bytes
+	- `/var` = **3221225472** Bytes
+	- `/srv` = **3221225472** Bytes
+	- `/tmp` = **3221225472** Bytes
+	- `/var/log` = le reste
