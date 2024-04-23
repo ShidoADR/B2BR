@@ -1,7 +1,7 @@
 # I - Mettre l ' utilisateur dans le groupe **Sudo** et **user42**
 
 - **NB :** pour creer un groupe on utilise la commande `addgroup [option] [-- gid] groupe`
-	- on ecris donc `addgroup hariandr42`
+	- on ecris donc `addgroup user42`
 	- le groupe **sudo** se cree automatiquement lorsqu'on installe **Sudo**
  `apt install sudo`
 	- **NB :** on doit se connecter en tant que ***Root*** pour pouvoir executer la commande
@@ -77,7 +77,61 @@ environnement de ***Root***
 		- difok=7
 	- on **Reboot** la machine
 # V - creation du script 'Monitoring.sh'
-
+- Pour verifier si `Cron` est bien installer il suffit de taper :
+		```
+		systemctl status cron
+		```
+	- pour programmer avec cron il faut simplement modifier votre fichier de programmation avec :
+		```
+		crontab -e
+		```
+	et suivre les indication ecrite en commentaire
+	- pour lister le fichier il suffit de taper `crontab -l`
+	- on va ecrire dans le fichier crontab
+		```
+		*/10 * * * * /bin/bash /home/hariandr/monitoring.sh
+		```
+	- **Remarque :** 
+		- on va encore devoir creer le script `monitoring.sh`
+		- le chemin du script dependra de votre choix
+	- Donc je vais creer mon fichier monitoring.sh dans le dossier `/home/hariandr` et y mettre
+		```
+		#!/bin/bash
+		arch=$(uname -a)
+		pcpu=$(cat /proc/cpuinfo| grep "physical id"| uniq| wc -l)
+		vcpu=$(cat /proc/cpuinfo | grep -c "processor")
+		memu=$(free --mega | grep "Mem" | awk '{printf ("%d/%dMB (%.2f%%)\n", $3, $2, ($3/$2) * 100)}')
+		memdisk=$(df -h --total | grep "total" | awk '{printf ("%s/%s (%s)\n", $3, $2, $5)}')
+		cpul=$(top -bn 1 | grep "Cpu" | awk '{printf ("%.1f%%\n", 100 - $8)}')
+		lboot=$(who -b | awk '{printf ("%s %s\n", $3, $4)}')
+		lvm=$(if [[ $(lsblk | awk '{print $6}' | grep -c "lvm") > 0 ]]
+		then
+			echo "yes"
+		else
+			echo "no"
+		fi
+		)
+		tcp=$(ss -t | grep -c "ESTAB")
+		log=$(who | wc -l)
+		net=$(ip a | grep "ether" | awk '{printf ("IP '"$(hostname -I)"' (%s)\n", $2)}')
+		sudo=$(journalctl -q _COMM=sudo | grep -c "COMMAND")
+		sleep=$(who -b | awk -F : '{printf ("%dm", $2%10)}')
+		
+		sleep $sleep && wall "	#Architecture : $arch
+			#CPU physical : $pcpu
+			#vCPU : $vcpu
+			#Memory Usage : $memu
+			#Disk Usage : $memdisk
+			#CPU load : $cpul
+			#Last boot : $lboot
+			#LVM use : $lvm
+			#Connexions TCP : $tcp ESTABLISHED
+			#User log : $log
+			#Network : $net
+			#Sudo : $sudo cmd
+		"
+		```
+	
 # VI - Bonus
 - intallation de ***WORDPRESS***
 	- installation de *lmp* stack (lighttpd, mariaDB, php)
@@ -115,7 +169,6 @@ environnement de ***Root***
 		- installation de php avec les modules necessaire
 		```
 		apt install php php-cgi php-mysql -y
-
 		```
 		- activation des modules 
 		```
@@ -171,7 +224,7 @@ environnement de ***Root***
 	- `bantime`  : La durée de bannissement d'une IP
 	- la partie `[sshd]` : permet d'activer la surveillance des connexion ssh
 	- apres cela il suffit de redemarrer le service *fail2ban* avec `systemctl restart fail2ban`
-	- pour verifier si les prisons ont etet correctement lancer on utilise `fail2ban-client status`
+	- pour verifier si les prisons ont ete correctement lancer on utilise `fail2ban-client status`
 	- On peut controler les prisons avec `start, stop, status`
 	- *exemple :* fail2ban-client stop sshd
 	- On peut bannir / de-bannir manuellement une **IP** manuellement avec :
