@@ -101,7 +101,7 @@ environnement de ***Root***
 		pcpu=$(cat /proc/cpuinfo| grep "physical id"| uniq| wc -l)
 		vcpu=$(cat /proc/cpuinfo | grep -c "processor")
 		memu=$(free --mega | grep "Mem" | awk '{printf ("%d/%dMB (%.2f%%)\n", $3, $2, ($3/$2) * 100)}')
-		memdisk=$(df -h --total | grep "total" | awk '{printf ("%s/%s (%s)\n", $3, $2, $5)}')
+		memdisk=$(df -h --total | awk 'END {printf ("%.1f/%s (%s)\n", $3, $2, $5)}')
 		cpul=$(top -bn 1 | grep "Cpu" | awk '{printf ("%.1f%%\n", 100 - $8)}')
 		lboot=$(who -b | awk '{printf ("%s %s\n", $3, $4)}')
 		lvm=$(if [[ $(lsblk | awk '{print $6}' | grep -c "lvm") > 0 ]]
@@ -111,7 +111,7 @@ environnement de ***Root***
 			echo "no"
 		fi
 		)
-		tcp=$(ss -t | grep -c "ESTAB")
+		tcp=$(cat /proc/net/sockstat | grep "TCP" | awk '{print $3}')
 		log=$(who | wc -l)
 		net=$(ip a | grep "ether" | awk '{printf ("IP '"$(hostname -I)"' (%s)\n", $2)}')
 		sudo=$(journalctl -q _COMM=sudo | grep -c "COMMAND")
